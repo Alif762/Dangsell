@@ -1,0 +1,15 @@
+name: DangSell
+version: 1.0.0
+main: my.dangsell.DangSell
+api-version: "1.20"
+softdepend: [Vault, Essentials]
+commands:
+  jual:
+    description: Buka menu jual
+    usage: /jual
+    aliases: [dsell]
+permissions:
+  dangsell.use:
+    default: true
+  dangsell.reload:
+    default: op
