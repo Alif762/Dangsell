@@ -40,7 +40,7 @@ public class DangSell extends JavaPlugin implements Listener, CommandExecutor {
     public void onEnable() {
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(this, this);
-        if (getCommand("jual") != null) getCommand("jual").setExecutor(this);
+        if (getCommand("sells") != null) getCommand("sells").setExecutor(this);
     }
 
     @Override
@@ -169,43 +169,4 @@ public class DangSell extends JavaPlugin implements Listener, CommandExecutor {
             getLogger().warning("Gagal masukkan duit: " + t.getMessage());
         }
 
-        p.sendMessage(msg("sold", "&aBerjaya jual &f%items% &aitem dan dapat &f$%money%")
-                .replace("%items%", String.valueOf(count))
-                .replace("%money%", String.format(Locale.US, "%,.2f", total)));
-        p.playSound(p.getLocation(), "entity.experience_orb.pickup", 1f, 1f);
-    }
-
-    // ---------- Harga ----------
-    private double priceOf(ItemStack item) {
-        if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) return 0;
-        String key = item.getType().name();
-
-        if (getConfig().isSet("prices." + key)) {
-            return getConfig().getDouble("prices." + key);
-        }
-        if (getConfig().getBoolean("use-essentials-worth", true)) {
-            if (worth == null) {
-                File f = new File(getDataFolder().getParentFile(), "Essentials/worth.yml");
-                worth = f.exists() ? YamlConfiguration.loadConfiguration(f) : new YamlConfiguration();
-            }
-            return worth.getDouble("worth." + key.toLowerCase(), 0);
-        }
-        return 0;
-    }
-
-    // ---------- Duit (Vault) ----------
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    private boolean hookEconomy() {
-        if (eco != null) return true;
-        try {
-            Class c = Class.forName("net.milkbowl.vault.economy.Economy");
-            RegisteredServiceProvider rsp = Bukkit.getServicesManager().getRegistration(c);
-            if (rsp == null) return false;
-            eco = rsp.getProvider();
-            deposit = c.getMethod("depositPlayer", OfflinePlayer.class, double.class);
-            return true;
-        } catch (Throwable t) {
-            return false;
-        }
-    }
-    }
+        p.sendMess
