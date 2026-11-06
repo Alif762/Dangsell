@@ -1,0 +1,57 @@
+gui-title: "&8Sell"
+use-essentials-worth: true
+
+messages:
+  sold: "&aBerjaya jual &f%items% &aitem dan dapat &f$%money%"
+  nothing: "&cTiada item yang boleh dijual dalam menu."
+  no-economy: "&cSistem duit (Vault) tak jumpa."
+  reloaded: "&aConfig dimuat semula."
+
+# Harga satu biji item. Guna nama material huruf besar.
+prices:
+  COBBLESTONE: 1
+  STONE: 2
+  COAL: 5
+  IRON_INGOT: 15
+  GOLD_INGOT: 25
+  COPPER_INGOT: 8
+  REDSTONE: 4
+  LAPIS_LAZULI: 6
+  DIAMOND: 100
+  EMERALD: 80
+  NETHERITE_INGOT: 1500
+  RAW_IRON: 10
+  RAW_GOLD: 18
+  RAW_COPPER: 5
+  IRON_BLOCK: 135
+  GOLD_BLOCK: 225
+  DIAMOND_BLOCK: 900
+  EMERALD_BLOCK: 720
+  QUARTZ: 4
+  GLOWSTONE_DUST: 3
+  OAK_LOG: 3
+  SPRUCE_LOG: 3
+  BIRCH_LOG: 3
+  DIRT: 1
+  SAND: 1
+  GRAVEL: 1
+  OBSIDIAN: 20
+  ENDER_PEARL: 30
+  BLAZE_ROD: 20
+  GHAST_TEAR: 50
+  NETHERRACK: 1
+  END_STONE: 3
+  BONE: 3
+  STRING: 2
+  GUNPOWDER: 6
+  ROTTEN_FLESH: 1
+  SPIDER_EYE: 3
+  SLIME_BALL: 5
+  WHEAT: 2
+  CARROT: 2
+  POTATO: 2
+  SUGAR_CANE: 2
+  PUMPKIN: 3
+  MELON_SLICE: 1
+  COOKED_BEEF: 6
+  COOKED_PORKCHOP: 6
