@@ -4,10 +4,9 @@ main: my.dangsell.DangSell
 api-version: "1.20"
 softdepend: [Vault, Essentials]
 commands:
-  jual:
-    description: Buka menu jual
-    usage: /jual
-    aliases: [dsell]
+  sells:
+    description: Buka menu sell shop
+    usage: /sells
 permissions:
   dangsell.use:
     default: true
