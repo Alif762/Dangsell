@@ -31,7 +31,6 @@ public class DangSell extends JavaPlugin implements Listener, CommandExecutor {
         public Inventory getInventory() { return null; }
     }
 
-    private final Set<UUID> open = new HashSet<>();
     private YamlConfiguration worth;
     private Object eco;
     private Method deposit;
@@ -41,14 +40,6 @@ public class DangSell extends JavaPlugin implements Listener, CommandExecutor {
         saveDefaultConfig();
         Bukkit.getPluginManager().registerEvents(this, this);
         if (getCommand("sells") != null) getCommand("sells").setExecutor(this);
-    }
-
-    @Override
-    public void onDisable() {
-        for (UUID id : new HashSet<>(open)) {
-            Player p = Bukkit.getPlayer(id);
-            if (p != null) p.closeInventory();
-        }
     }
 
     private String color(String s) {
@@ -83,7 +74,6 @@ public class DangSell extends JavaPlugin implements Listener, CommandExecutor {
         Inventory inv = Bukkit.createInventory(new SellHolder(), SIZE,
                 color(getConfig().getString("gui-title", "&8Sell")));
         inv.setItem(SELL_SLOT, sellButton());
-        open.add(p.getUniqueId());
         p.openInventory(inv);
     }
 
@@ -125,7 +115,6 @@ public class DangSell extends JavaPlugin implements Listener, CommandExecutor {
         Inventory inv = e.getInventory();
         if (!(inv.getHolder() instanceof SellHolder)) return;
         if (!(e.getPlayer() instanceof Player p)) return;
-        open.remove(p.getUniqueId());
 
         // Pulangkan item yang belum dijual
         for (int i = 0; i < SELL_SLOT; i++) {
@@ -169,4 +158,43 @@ public class DangSell extends JavaPlugin implements Listener, CommandExecutor {
             getLogger().warning("Gagal masukkan duit: " + t.getMessage());
         }
 
-        p.sendMess
+        p.sendMessage(msg("sold", "&aBerjaya jual &f%items% &aitem dan dapat &f$%money%")
+                .replace("%items%", String.valueOf(count))
+                .replace("%money%", String.format(Locale.US, "%,.2f", total)));
+        p.playSound(p.getLocation(), "entity.experience_orb.pickup", 1f, 1f);
+    }
+
+    // ---------- Harga ----------
+    private double priceOf(ItemStack item) {
+        if (item.hasItemMeta() && item.getItemMeta().hasDisplayName()) return 0;
+        String key = item.getType().name();
+
+        if (getConfig().isSet("prices." + key)) {
+            return getConfig().getDouble("prices." + key);
+        }
+        if (getConfig().getBoolean("use-essentials-worth", true)) {
+            if (worth == null) {
+                File f = new File(getDataFolder().getParentFile(), "Essentials/worth.yml");
+                worth = f.exists() ? YamlConfiguration.loadConfiguration(f) : new YamlConfiguration();
+            }
+            return worth.getDouble("worth." + key.toLowerCase(), 0);
+        }
+        return 0;
+    }
+
+    // ---------- Duit (Vault) ----------
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private boolean hookEconomy() {
+        if (eco != null) return true;
+        try {
+            Class c = Class.forName("net.milkbowl.vault.economy.Economy");
+            RegisteredServiceProvider rsp = Bukkit.getServicesManager().getRegistration(c);
+            if (rsp == null) return false;
+            eco = rsp.getProvider();
+            deposit = c.getMethod("depositPlayer", OfflinePlayer.class, double.class);
+            return true;
+        } catch (Throwable t) {
+            return false;
+        }
+    }
+}
